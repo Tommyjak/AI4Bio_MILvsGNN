@@ -1,0 +1,44 @@
+# ==========================================
+# VIRTUAL ENVIRONMENTS AND DEPENDENCIES
+# ==========================================
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# ==========================================
+# CACHE FILES AND PYTHON ARTIFACTS
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ==========================================
+# EDITOR AND IDE SETTINGS
+# ==========================================
+# Visual Studio Code
+.vscode/
+# PyCharm / IntelliJ
+.idea/
+*.iml
+# File temporanei di Vim/Emacs
+*.swp
+*.swo
+*~
+
+# ==========================================
+# ENV VARIABLES AND SENSITIVE DATA
+# ==========================================
+.env
+.env.local
+.env.*
+
+# ==========================================
+# TESTING AND COVERAGE REPORTS
+# ==========================================
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
