@@ -1,0 +1,52 @@
+ellie,participant,instance
+IntroV4Confirmation (hi i'm ellie thanks for coming in today i was created to talk to people in a safe and secure environment i'm not a therapist but i'm here to learn about people and would love to learn about you i'll ask a few questions to get us started and please feel free to tell me anything your answers are totally confidential are you ok with this),<sync> yes,IntroV4Confirmation (hi i'm ellie thanks for coming in today i was created to talk to people in a safe and secure environment i'm not a therapist but i'm here to learn about people and would love to learn about you i'll ask a few questions to get us started and please feel free to tell me anything your answers are totally confidential are you ok with this) [SEP] <sync> yes
+okay_confirm (okay) how_doingV (so how are you doing today),good how are you,okay_confirm (okay) how_doingV (so how are you doing today) [SEP] good how are you
+great_thanks (i'm great thanks) where_originally (where are you from originally),los angeles,great_thanks (i'm great thanks) where_originally (where are you from originally) [SEP] los angeles
+really (really) like_about_LA (what are some things you really like about l_a),uh weather entertainment,really (really) like_about_LA (what are some things you really like about l_a) [SEP] uh weather entertainment
+dont_like_LA (what are some things you don't really like about l_a),traffic,dont_like_LA (what are some things you don't really like about l_a) [SEP] traffic
+travel_shoes (i'm sure you can tell by my shoes i'm not much of a world explorer do you travel a lot),no,travel_shoes (i'm sure you can tell by my shoes i'm not much of a world explorer do you travel a lot) [SEP] no
+why2 (why),too <t> too many people,why2 (why) [SEP] too <t> too many people
+see_mean (i see what you mean) study (what did you study at school),business,see_mean (i see what you mean) study (what did you study at school) [SEP] business
+hard_decision (how did you decide to do that),uh just fun thing to do,hard_decision (how did you decide to do that) [SEP] uh just fun thing to do
+still_working_on_X (are you still working in that),yes,still_working_on_X (are you still working in that) [SEP] yes
+tell_about_that (can you tell me about that),nothing much to talk about,tell_about_that (can you tell me about that) [SEP] nothing much to talk about
+dream_job (what's your dream job),hm maybe talking to you,dream_job (what's your dream job) [SEP] hm maybe talking to you
+wild_laughter3 ((laughter)) family_relationship (tell me about your relationship with your family),um pretty good environment,wild_laughter3 ((laughter)) family_relationship (tell me about your relationship with your family) [SEP] um pretty good environment
+thats_good (that's good) family_roleB (how close are you to your family),pretty good,thats_good (that's good) family_roleB (how close are you to your family) [SEP] pretty good
+okay_confirm (okay) shyoutgoing (do you consider yourself more shy or outgoing),the middle,okay_confirm (okay) shyoutgoing (do you consider yourself more shy or outgoing) [SEP] the middle
+relax_fishtank (sometimes when i'm feeling tense i turn on the fish tank screensaver hey i know it's not hawaii but it's the best i've got what do you do to relax),sleep,relax_fishtank (sometimes when i'm feeling tense i turn on the fish tank screensaver hey i know it's not hawaii but it's the best i've got what do you do to relax) [SEP] sleep
+control_temper (how are you at controlling your temper),i don't know,control_temper (how are you at controlling your temper) [SEP] i don't know
+last_argument (when was the last time you argued with someone and what was it about),don't remember,last_argument (when was the last time you argued with someone and what was it about) [SEP] don't remember
+hmmB (hmm) feelguilty (what's something you feel guilty about),no nothing really,hmmB (hmm) feelguilty (what's something you feel guilty about) [SEP] no nothing really
+memory_erase (tell me about an event or something that you wish you could erase from your memory),um i don't know i can't remember,memory_erase (tell me about an event or something that you wish you could erase from your memory) [SEP] um i don't know i can't remember
+mad_makeyou (what are some things that make you really mad),um bad people,mad_makeyou (what are some things that make you really mad) [SEP] um bad people
+give_example (can you give me an example of that),you know just bad people doing back things,give_example (can you give me an example of that) [SEP] you know just bad people doing back things
+like_what (like what),uh car accidents,like_what (like what) [SEP] uh car accidents
+okay_confirm (okay) hard_decisionB (tell me about the hardest decision you've ever had to make),mm don't don't know any of them,okay_confirm (okay) hard_decisionB (tell me about the hardest decision you've ever had to make) [SEP] mm don't don't know any of them
+situation_handled (tell me about a situation that you wish you had handled differently),don't really know any,situation_handled (tell me about a situation that you wish you had handled differently) [SEP] don't really know any
+mm (mm) influence_positive (who's someone that's been a positive influence in your life),uh nobody,mm (mm) influence_positive (who's someone that's been a positive influence in your life) [SEP] uh nobody
+ptsd_diagnosed (have you ever been diagnosed with p_t_s_d),no,ptsd_diagnosed (have you ever been diagnosed with p_t_s_d) [SEP] no
+depression_diagnosed (have you been diagnosed with depression),no,depression_diagnosed (have you been diagnosed with depression) [SEP] no
+easy_sleep (how easy is it for you to get a good night's sleep),somewhat okay,easy_sleep (how easy is it for you to get a good night's sleep) [SEP] somewhat okay
+sleep_affects (what are you like when you don't sleep well),just waking up thinking,sleep_affects (what are you like when you don't sleep well) [SEP] just waking up thinking
+trigger (are they triggered by something),no i i don't know,trigger (are they triggered by something) [SEP] no i i don't know
+behavior_changes (have you noticed any changes in your behavior or thoughts lately),no,behavior_changes (have you noticed any changes in your behavior or thoughts lately) [SEP] no
+feel_lately (how have you been feeling lately),i don't know,feel_lately (how have you been feeling lately) [SEP] i don't know
+happy_lasttime (tell me about the last time you felt really happy),hm don't don't remember,happy_lasttime (tell me about the last time you felt really happy) [SEP] hm don't don't remember
+Ellie17Dec2012_10 (tell me about something you did recently that you really enjoyed),i i don't know talking to you,Ellie17Dec2012_10 (tell me about something you did recently that you really enjoyed) [SEP] i i don't know talking to you
+really (really) why2 (why),first time i've done this before,really (really) why2 (why) [SEP] first time i've done this before
+cool3 (cool) ideal_weekendC (tell me how you spend your ideal weekend),i have no idea sleep,cool3 (cool) ideal_weekendC (tell me how you spend your ideal weekend) [SEP] i have no idea sleep
+okay_confirm (okay) self_change (what are some things you wish you could change about yourself),not too much,okay_confirm (okay) self_change (what are some things you wish you could change about yourself) [SEP] not too much
+like_what (like what),nothing,like_what (like what) [SEP] nothing
+feelbadly (tell me about a time when someone made you feel really badly about yourself),don't have any experience,feelbadly (tell me about a time when someone made you feel really badly about yourself) [SEP] don't have any experience
+BF_describe (how would your best friend describe you),um i don't know not sure,BF_describe (how would your best friend describe you) [SEP] um i don't know not sure
+um (um) Ellie17Dec2012_07 (what would you say are some of your best qualities),um just be a nice person,um (um) Ellie17Dec2012_07 (what would you say are some of your best qualities) [SEP] um just be a nice person
+Ellie17Dec2012_02 (uh huh) Ellie17Dec2012_08 (what are you most proud of in your life),not sure,Ellie17Dec2012_02 (uh huh) Ellie17Dec2012_08 (what are you most proud of in your life) [SEP] not sure
+mind (whatever comes to your mind),nothing much,mind (whatever comes to your mind) [SEP] nothing much
+regret (is there anything you regret),no,regret (is there anything you regret) [SEP] no
+advice_back (what advice would you give to yourself ten or twenty years ago),i don't know,advice_back (what advice would you give to yourself ten or twenty years ago) [SEP] i don't know
+memorableB (what's one of your most memorable experiences),i don't know,memorableB (what's one of your most memorable experiences) [SEP] i don't know
+hmm_downer (hmm) do_fun (what are some things you like to do for fun),i don't know play sports,hmm_downer (hmm) do_fun (what are some things you like to do for fun) [SEP] i don't know play sports
+like_what (like what),basketball,like_what (like what) [SEP] basketball
+bouts_symptoms (when was the last time that happened),mm last month,bouts_symptoms (when was the last time that happened) [SEP] mm last month
+awesome (awesome) asked_everything (okay i think i have asked everything i need to) appreciate_open (thanks for sharing your thoughts with me) bye (goodbye),goodbye,awesome (awesome) asked_everything (okay i think i have asked everything i need to) appreciate_open (thanks for sharing your thoughts with me) bye (goodbye) [SEP] goodbye
