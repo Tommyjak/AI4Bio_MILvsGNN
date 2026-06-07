@@ -52,7 +52,7 @@ def run_total_pairing(ds_path, output_path):
             print(f"{filename.split('_')[0]}: {len(pairs_df)} pairs")
 
 def main():
-    run_total_pairing("../daic-woz", "../daic-woz/pairs")
+    run_total_pairing("../daic-woz/transcripts", "../daic-woz/pairs")
 
 if __name__ == "__main__":
     main()
