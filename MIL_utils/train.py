@@ -1,23 +1,54 @@
 import pandas as pd
+import os
 import torch
 import torch.nn as nn
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from sklearn.metrics import f1_score
+from transformers import AutoTokenizer
+import logging
 
+from pairings import run_total_pairing
 from dataset import DAICBagDataset, build_label_map, build_bags
 from model import InstanceEncoder, AttentionMIL
+from ds_yaml_parser import get_split_path, get_pairs_path, get_transcripts_path
 
 # ── config ────────────────────────────────────────────────────────────────────
-TRAIN_PATH = "../daic-woz/train_split_Depression_AVEC2017.csv"
-DEV_PATH = "../daic-woz/dev_split_Depression_AVEC2017.csv"
-PAIRS_DIR = "../daic-woz/pairs"
-CHECKPOINT = "best_model.pt"
-N_EPOCHS = 10
+TRAIN_PATH  = get_split_path("daic_woz", "train")
+DEV_PATH    = get_split_path("daic_woz", "dev")
+PAIRS_DIR   = get_pairs_path("daic_woz")
+TRANSCRIPTS = get_transcripts_path("daic_woz")
+RESULTS_DIR = "results"
+CHECKPOINT = os.path.join(RESULTS_DIR, "best_model.pt")
+LATEST = os.path.join(RESULTS_DIR, "latest.pt")
+LOG_FILE = os.path.join(RESULTS_DIR, "train.log")
+PATIENCE = 5  # stop if no improvement for 5 consecutive epochs
+N_EPOCHS  = 50 # set a generous upper bound
 LR = 2e-5
 WEIGHT_DECAY = 1e-4
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+# create results dir before logging initializes
+os.makedirs(RESULTS_DIR, exist_ok=True)
+
+logging.basicConfig(
+    filename = LOG_FILE,
+    filemode = "a", 
+    format="%(asctime)s %(message)s",
+    level=logging.INFO
+)
+
+def load_checkpoint_if_exists(encoder, mil, optimizer):
+    if not os.path.exists(CHECKPOINT):
+        return 0, 0.0
+    checkpoint = torch.load(CHECKPOINT, map_location=DEVICE)
+    encoder.load_state_dict(checkpoint["encoder"])
+    mil.load_state_dict(checkpoint["mil"])
+    optimizer.load_state_dict(checkpoint["optimizer"])  # ← also save optimizer
+    start_epoch = checkpoint["epoch"]
+    best_f1     = checkpoint["f1"]
+    print(f"Resuming from epoch {start_epoch}, best F1={best_f1:.4f}")
+    return start_epoch, best_f1
 
 # ── step 1 — load CSVs and split bags by session ID ───────────────────────────
 def load_data():
@@ -37,11 +68,11 @@ def load_data():
 
 
 # ── step 2 — create DataLoaders ───────────────────────────────────────────────
-def build_loaders(train_bags, dev_bags):
+def build_loaders(train_bags, dev_bags, tokenizer):
     # shuffle=True for train to randomize order each epoch, False for dev since order doesn't matter for evaluation
-    train_loader = DataLoader(DAICBagDataset(train_bags), batch_size=1, shuffle=True)
-    dev_loader = DataLoader(DAICBagDataset(dev_bags),   batch_size=1, shuffle=False)
-
+    train_loader = DataLoader(DAICBagDataset(train_bags, tokenizer), batch_size=1, shuffle=True)
+    dev_loader = DataLoader(DAICBagDataset(dev_bags, tokenizer), batch_size=1, shuffle=False)
+    
     return train_loader, dev_loader
 
 
@@ -120,33 +151,43 @@ def evaluate(encoder, mil, dev_loader):
 
 
 # ── step 5 — save checkpoint if best ─────────────────────────────────────────
-def save_if_best(encoder, mil, f1, best_f1, epoch):
-    # Saves a chekpooint only when dev F1 improves
+def save_if_best(encoder, mil, f1, best_f1, epoch, optimizer):
     if f1 > best_f1:
         torch.save({
-            "epoch": epoch + 1,
-
-            # state_dict() saves just the weights, not the full model object
-            "encoder": encoder.state_dict(),
-
-            "mil": mil.state_dict(),
-            "f1": f1
+            "epoch":     epoch + 1,
+            "encoder":   encoder.state_dict(),
+            "mil":       mil.state_dict(),
+            "optimizer": optimizer.state_dict(),
+            "f1":        f1
         }, CHECKPOINT)
-
         print(f" Checkpoint saved (F1={f1:.4f})")
-        
-        return f1
-    
+        best_f1 = f1
+
+    # always save latest regardless of F1
+    torch.save({
+        "epoch":     epoch + 1,
+        "encoder":   encoder.state_dict(),
+        "mil":       mil.state_dict(),
+        "optimizer": optimizer.state_dict(),
+        "f1":        f1
+    }, LATEST)
+
     return best_f1
 
 
 # ── main ──────────────────────────────────────────────────────────────────────
-def train():
+def train():  
     print(f"Using device: {DEVICE}")
+
+    # ── step 0: preprocessing ─────────────────────────────────────────────────
+    print("Running transcript pairing...")
+    run_total_pairing(TRANSCRIPTS, PAIRS_DIR)
+
+    tokenizer = AutoTokenizer.from_pretrained("mental/mental-bert-base-uncased")
 
     # Recalls the above defined functions
     train_bags, dev_bags = load_data()
-    train_loader, dev_loader = build_loaders(train_bags, dev_bags)
+    train_loader, dev_loader = build_loaders(train_bags, dev_bags, tokenizer)
 
     # Instantiation of the two models, moving the to device (GPU if available)
     encoder = InstanceEncoder().to(DEVICE)
@@ -163,12 +204,31 @@ def train():
     criterion = nn.BCELoss()
     best_f1 = 0.0
 
+    start_epoch, best_f1 = load_checkpoint_if_exists(encoder, mil, optimizer)
+
     # Main loop — each epoch trains, evaluates, saves if improved, and prints a summary line
-    for epoch in range(N_EPOCHS):
+    patience_counter = 0
+    for epoch in range(start_epoch, N_EPOCHS):
         avg_loss = train_epoch(encoder, mil, train_loader, optimizer, criterion, epoch)
         f1, acc = evaluate(encoder, mil, dev_loader)
-        best_f1 = save_if_best(encoder, mil, f1, best_f1, epoch)
-        print(f"Epoch {epoch+1}/{N_EPOCHS} — Loss: {avg_loss:.4f} | Dev F1: {f1:.4f} | Dev Acc: {acc:.4f}")
+
+        new_best_f1 = save_if_best(encoder, mil, f1, best_f1, epoch, optimizer)
+
+        if new_best_f1 > best_f1:
+            best_f1 = new_best_f1
+            patience_counter = 0
+        else:
+            patience_counter += 1
+            logging.info(f"No improvement for {patience_counter}/{PATIENCE} epochs")
+
+        msg = f"Epoch {epoch+1}/{N_EPOCHS} — Loss: {avg_loss:.4f} | Dev F1: {f1:.4f} | Dev Acc: {acc:.4f}"
+        print(msg)
+        logging.info(msg)
+
+        if patience_counter >= PATIENCE:
+            print(f"Early stopping triggered at epoch {epoch+1}")
+            logging.info(f"Early stopping triggered at epoch {epoch+1}")
+            break
 
     print(f"\nTraining complete. Best Dev F1: {best_f1:.4f}")
 

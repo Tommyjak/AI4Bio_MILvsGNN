@@ -50,16 +50,3 @@ class AttentionMIL(nn.Module):
                          self.classifier(aggregated)
                      )                              # scalar
         return prob, weights
-
-
-def main():
-    # sanity check: random bag of 50 pairs
-    dummy_bag = torch.randn(50, 768)
-    mil = AttentionMIL()
-    prob, weights = mil(dummy_bag)
-    print(f"Prediction: {prob.item():.4f}")
-    print(f"Weights shape: {weights.shape}")       # (50, 1)
-    print(f"Weights sum: {weights.sum().item():.4f}")  # should be 1.0
-
-if __name__ == "__main__":
-    main()

@@ -29,12 +29,9 @@ def build_bags(label_map, pairs_dir):
     return bags
 
 class DAICBagDataset(Dataset):
-    # Another time I might want to another (better) tokenizer: "mental/mental-bert-base-uncased" (it has a the hugging-face access problem)
-    # Another time I might want to another (worse) tokenizer: "bert-base-uncased" (it hasn't a the hugging-face access problem)
-
-    def __init__(self, bags, tokenizer_name="mental/mental-bert-base-uncased", max_length=256):
+    def __init__(self, bags, tokenizer, max_length=256):
         self.bags = bags
-        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
+        self.tokenizer = tokenizer
         self.max_length = max_length
 
     def __len__(self):
@@ -53,22 +50,3 @@ class DAICBagDataset(Dataset):
         )
         return encodings, torch.tensor(label, dtype=torch.float), session_id
     
-def main():
-    label_map = build_label_map(
-        "../daic-woz/train_split_Depression_AVEC2017.csv",
-        "../daic-woz/dev_split_Depression_AVEC2017.csv"
-    )
-    print(f"Labels loaded: {len(label_map)} sessions")
-
-    bags = build_bags(label_map, "../daic-woz/pairs")
-    print(f"Bags built: {len(bags)} valid sessions")
-
-    dataset = DAICBagDataset(bags)
-    print(f"Dataset size: {len(dataset)}")
-
-    # Quick sanity check on first bag
-    encodings, label, sid = dataset[0]
-    print(f"Session {sid}: {encodings['input_ids'].shape} — label {int(label)}")
-
-if __name__ == "__main__":
-    main()

@@ -46,14 +46,12 @@ def run_total_pairing(ds_path, output_path):
     for filename in sorted(os.listdir(ds_path)):
         if filename.endswith("_TRANSCRIPT.csv"):
             file_path = os.path.join(ds_path, filename)
-            pairs_df = build_pairs(file_path)
             output_file = os.path.join(output_path, filename.replace("_TRANSCRIPT.csv", "_PAIRS.csv"))
+            
+            # skip if already done
+            if os.path.exists(output_file):
+                continue
+            
+            pairs_df = build_pairs(file_path)
             pairs_df.to_csv(output_file, index=False)
             print(f"{filename.split('_')[0]}: {len(pairs_df)} pairs")
-
-def main():
-    run_total_pairing("../daic-woz/transcripts", "../daic-woz/pairs")
-
-if __name__ == "__main__":
-    main()
-    
