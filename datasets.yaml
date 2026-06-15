@@ -1,0 +1,12 @@
+datasets:
+  # imp! make sure to run the training from inside the MIL_utils folder, otherwise the paths won't work
+  # otherwise modify all the path to be absolute inside the aimagelab server
+  daic_woz:
+    root: "../daic-woz"
+    transcripts: "../daic-woz/transcripts"
+    pairs: "../daic-woz/pairs"
+    splits:
+      train: "../daic-woz/train_split_Depression_AVEC2017.csv"
+      dev: "../daic-woz/dev_split_Depression_AVEC2017.csv"
+      test: "../daic-woz/test_split_Depression_AVEC2017.csv"
+      full_test: "../daic-woz/full_test_split.csv"
