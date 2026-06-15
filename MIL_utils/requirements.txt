@@ -3,3 +3,4 @@ torch
 transformers
 huggingface_hub
 scikit-learn
+pyyaml
